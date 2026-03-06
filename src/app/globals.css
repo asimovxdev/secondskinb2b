@@ -1,0 +1,154 @@
+@import "tailwindcss";
+
+@theme {
+  --color-luxury-gold: #d4af37;
+  --color-luxury-champagne: #f7e7ce;
+  --color-graphite: #1a1a1a;
+  --color-obsidian: #050505;
+  --color-cream: #fcf9f2;
+  --color-neon: #ccff00;
+  --color-anthracite: #0a0a0a;
+  --color-soft-white: #f9f9f9;
+  --font-sans: var(--font-outfit), system-ui, sans-serif;
+  --font-serif: var(--font-garamond), serif;
+}
+
+:root {
+  --background: #fcf9f2;
+  /* Warm Cream */
+  --foreground: #1a1a1a;
+  /* Graphite */
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  @apply transition-colors duration-1000 overflow-x-hidden selection:bg-luxury-gold selection:text-white antialiased;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  line-height: 1.7;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-serif leading-[1.1] tracking-[-0.02em] font-light;
+}
+
+.luxury-headline {
+  @apply font-serif italic text-[14vw] md:text-[10vw] leading-[0.85] tracking-[-0.05em];
+}
+
+.editorial-text {
+  @apply text-xl md:text-3xl font-serif italic text-neutral-600 leading-snug tracking-tight;
+}
+
+.button-premium {
+  @apply relative overflow-hidden h-16 px-14 bg-graphite text-white font-sans text-[10px] font-bold uppercase tracking-[0.5em] inline-flex items-center justify-center transition-all duration-700 hover:bg-luxury-gold hover:tracking-[0.7em] border border-white/5;
+}
+
+.button-outline-luxury {
+  @apply relative overflow-hidden h-16 px-14 border border-graphite/20 text-graphite font-sans text-[10px] font-bold uppercase tracking-[0.4em] inline-flex items-center justify-center transition-all duration-700 hover:bg-graphite hover:text-white;
+}
+
+.premium-card {
+  @apply bg-white/50 backdrop-blur-xl border border-black/[0.03] transition-all duration-1000 p-12;
+}
+
+.premium-card:hover {
+  @apply transform -translate-y-2;
+  box-shadow: 0 50px 100px -20px rgba(212, 175, 55, 0.05);
+}
+
+.luxury-grid {
+  background-image: linear-gradient(to right, rgba(212, 175, 55, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(212, 175, 55, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.noise-kinetic {
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+  filter: contrast(180%) brightness(1200%);
+  mask-image: radial-gradient(circle, white, transparent 80%);
+}
+
+.bg-gradient-radial {
+  background-image: radial-gradient(circle at center, var(--tw-gradient-from) 0%, var(--tw-gradient-to) 100%);
+}
+
+.mask-radial-soft {
+  mask-image: radial-gradient(circle at center, black, transparent 70%);
+}
+
+.tracking-ultra-wide {
+  letter-spacing: 0.3em;
+}
+
+.text-luxury-stroke {
+  -webkit-text-stroke: 1px rgba(26, 26, 26, 0.1);
+  color: transparent;
+}
+
+.text-luxury-stroke-light {
+  -webkit-text-stroke: 1.5px rgba(252, 249, 242, 0.8);
+  color: transparent;
+}
+
+.text-radiant-gold {
+  color: #d4af37;
+  /* Fallback */
+  background: linear-gradient(135deg, #d4af37 0%, #f7e7ce 50%, #d4af37 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+  animation: goldShine 5s linear infinite;
+}
+
+@keyframes goldShine {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.luxury-blur-reveal {
+  filter: blur(20px);
+  opacity: 0;
+  animation: luxuryReveal 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes luxuryReveal {
+  to {
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-luxury-gold);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--foreground);
+}
