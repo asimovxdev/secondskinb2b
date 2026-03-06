@@ -1,11 +1,11 @@
 "use client";
 
-import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 
 // 1. ARCHITECTURAL PRISM COMPONENT (Non-rectangular glass shards)
-const PrismShard = ({ d, color, delay, scrollY }: { d: string; color: string; delay: number; scrollY: any }) => {
+const PrismShard = ({ d, color, delay, scrollY }: { d: string; color: string; delay: number; scrollY: import("framer-motion").MotionValue<number> }) => {
     const yParallax = useTransform(scrollY, [0, 1], [0, Math.random() * -300]);
     return (
         <motion.svg
@@ -57,7 +57,7 @@ const KineticSchematic = ({ x, y, size, delay }: { x: string; y: string; size: n
 );
 
 // 3. ENERGY FILAMENT (Silk-like glowing particles)
-const EnergyFilament = ({ index }: { index: number }) => {
+const EnergyFilament = () => {
     const x = Math.random() * 100;
     const y = Math.random() * 100;
     const duration = 15 + Math.random() * 20;
@@ -77,7 +77,7 @@ const EnergyFilament = ({ index }: { index: number }) => {
 };
 
 // 4. LIQUID LETTER COMPONENT WITH REFRACTION ECHO
-const LetterAnimate = ({ letter, index, delay, scrollYProgress }: { letter: string; index: number; delay: number; scrollYProgress: any }) => {
+const LetterAnimate = ({ letter, index, delay, scrollYProgress }: { letter: string; index: number; delay: number; scrollYProgress: import("framer-motion").MotionValue<number> }) => {
     const echoY = useTransform(scrollYProgress, [0, 1], [0, 100]);
     const echoSkew = useTransform(scrollYProgress, [0, 1], [0, 15]);
 
@@ -112,7 +112,6 @@ const LetterAnimate = ({ letter, index, delay, scrollYProgress }: { letter: stri
 
 export default function Hero() {
     const containerRef = useRef<HTMLDivElement>(null);
-    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const [isMounted, setIsMounted] = useState(false);
 
     const { scrollYProgress } = useScroll({
@@ -142,7 +141,6 @@ export default function Hero() {
         const handleMouseMove = (e: MouseEvent) => {
             springX.set(e.clientX);
             springY.set(e.clientY);
-            setMousePos({ x: e.clientX, y: e.clientY });
         };
         window.addEventListener("mousemove", handleMouseMove);
         return () => window.removeEventListener("mousemove", handleMouseMove);
@@ -191,7 +189,7 @@ export default function Hero() {
             />
 
             {isMounted && Array.from({ length: 12 }).map((_, i) => (
-                <EnergyFilament key={`fil-${i}`} index={i} />
+                <EnergyFilament key={`fil-${i}`} />
             ))}
 
             {/* 3. THE ARCHITECTURAL PRISMS (Non-rectangular glass) */}

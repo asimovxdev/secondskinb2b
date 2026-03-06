@@ -1,23 +1,21 @@
 "use client";
 
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { ArrowRight, ArrowUpRight, ChevronDown, Layers, Activity, Plus, ScanLine } from "lucide-react";
-import Link from "next/link";
+import { motion, useScroll, useSpring } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 
-// Elite Performance Physics - Typed for Next.js Build
-const transitionElite: any = {
+// Elite Performance Physics
+const transitionElite = {
     duration: 1.2,
-    ease: [0.16, 1, 0.3, 1]
+    ease: [0.16, 1, 0.3, 1] as any
 };
 
 export default function Home() {
     const containerRef = useRef(null);
     const { scrollYProgress } = useScroll({ target: containerRef });
-    const smoothProgress = useSpring(scrollYProgress, { damping: 30, stiffness: 200, mass: 0.5 });
 
     // Slider state for Range Section
     const [rangeIndex, setRangeIndex] = useState(0);
@@ -227,7 +225,7 @@ export default function Home() {
                 <div className="max-w-[1200px] mx-auto relative z-10">
                     <div className="mb-32 text-center">
                         <h2 className="luxury-headline text-graphite mb-10">Ready?</h2>
-                        <p className="editorial-text max-w-xl mx-auto">Initialize a partnership. Tell us about your club's vision for performance.</p>
+                        <p className="editorial-text max-w-xl mx-auto">Initialize a partnership. Tell us about your club&apos;s vision for performance.</p>
                     </div>
 
                     <form className="p-12 lg:p-32 bg-white/50 backdrop-blur-3xl border border-graphite/5 shadow-[0_80px_150px_-30px_rgba(0,0,0,0.05)]">
