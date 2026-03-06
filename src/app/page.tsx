@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useSpring } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import Navbar from "@/components/Navbar";
@@ -10,12 +10,11 @@ import Hero from "@/components/Hero";
 // Elite Performance Physics
 const transitionElite = {
     duration: 1.2,
-    ease: [0.16, 1, 0.3, 1] as any
+    ease: [0.16, 1, 0.3, 1] as [number, number, number, number]
 };
 
 export default function Home() {
     const containerRef = useRef(null);
-    const { scrollYProgress } = useScroll({ target: containerRef });
 
     // Slider state for Range Section
     const [rangeIndex, setRangeIndex] = useState(0);
