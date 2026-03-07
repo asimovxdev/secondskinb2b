@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 
-// Elite Performance Physics
+// Elite Performance Physic
 const transitionElite = {
     duration: 1.2,
     ease: [0.16, 1, 0.3, 1] as [number, number, number, number]
