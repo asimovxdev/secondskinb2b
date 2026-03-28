@@ -19,6 +19,9 @@ export const metadata: Metadata = {
   description: "Elite Custom Sportswear. Built for Performance. Premium custom sportswear engineered to move like your second skin.",
 };
 
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -29,7 +32,9 @@ export default function RootLayout({
       <body
         className={`${outfit.variable} ${ebGaramond.variable} font-sans antialiased bg-white text-black selection:bg-black selection:text-white`}
       >
+        <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );
