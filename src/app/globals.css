@@ -1,142 +1,52 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-primary: #000000;      /* Deep Black */
-  --color-brand-secondary: #404040;    /* Dark Gray */
-  --color-brand-accent: #000000;       /* Solid Black */
-  --color-surface-light: #f8f8f8;      /* Premium White (Off-White) */
-  --color-surface-pure: #ffffff;       /* Pure White */
-  --color-surface-dark: #000000;       /* Solid Black */
-  
-  /* Legacy/Compatibility Mappings */
-  --color-luxury-gold: #000000;
-  --color-graphite: #0a0a0a;
-  --color-obsidian: #000000;
-  --color-cream: #f8f8f8;
-  --color-neon: #000000;
-  --color-anthracite: #000000;
-  --color-soft-white: #f8f8f8;
-  
-  --font-sans: var(--font-outfit), system-ui, sans-serif;
-  --font-serif: var(--font-inter), sans-serif;
+  --color-brand-black: #000000;
+  --color-brand-white: #ffffff;
+  --color-brand-gray-light: #f8f8f8;
+  --color-brand-gray-medium: #e5e5e5;
+  --color-brand-gray-dark: #121212;
+  --font-sans: "Inter", "Instrument Sans", "PP Neue Montreal", sans-serif;
 }
 
-:root {
-  --background: #f8f8f8;
-  --foreground: #000000;
-}
+@layer base {
+  body {
+    @apply bg-white text-black antialiased selection:bg-black selection:text-white overflow-x-hidden;
+    background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.05) 1px, transparent 0);
+    background-size: 40px 40px;
+  }
 
-body {
-  background-color: var(--background);
-  color: var(--foreground);
-  @apply transition-colors duration-500 overflow-x-hidden selection:bg-brand-primary selection:text-white antialiased;
-  font-size: 16px;
-  letter-spacing: -0.02em;
-  line-height: 1.5;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  @apply font-sans leading-[1.1] tracking-[-0.05em] font-black uppercase;
-}
-
-.luxury-headline {
-  @apply font-sans font-black text-[14vw] md:text-[10vw] leading-[0.85] tracking-[-0.07em] uppercase;
-}
-
-.editorial-text {
-  @apply text-lg md:text-2xl font-sans text-brand-secondary leading-relaxed tracking-tight font-bold;
-}
-
-.button-premium {
-  @apply relative overflow-hidden h-14 px-10 bg-brand-primary text-white font-sans text-[12px] font-black uppercase tracking-[0.4em] inline-flex items-center justify-center transition-all duration-300 hover:bg-zinc-800 border border-black/10;
-}
-
-.button-outline-luxury {
-  @apply relative overflow-hidden h-14 px-10 border-2 border-brand-primary text-brand-primary font-sans text-[12px] font-black uppercase tracking-[0.4em] inline-flex items-center justify-center transition-all duration-300 hover:bg-brand-primary hover:text-white;
-}
-
-.premium-card {
-  @apply bg-white border border-black/[0.05] transition-all duration-500 p-12 hover:border-black/20;
-}
-
-.premium-card:hover {
-  @apply transform -translate-y-1;
-}
-
-.luxury-grid {
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
-  background-size: 50px 50px;
-}
-
-.noise-kinetic {
-  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
-  filter: contrast(150%) brightness(1000%) grayscale(100%);
-  mask-image: radial-gradient(circle, white, transparent 90%);
-}
-
-.bg-gradient-radial {
-  background-image: radial-gradient(circle at center, var(--tw-gradient-from) 0%, var(--tw-gradient-to) 100%);
-}
-
-.mask-radial-soft {
-  mask-image: radial-gradient(circle at center, black, transparent 70%);
-}
-
-.tracking-ultra-wide {
-  letter-spacing: 0.5em;
-}
-
-.text-luxury-stroke {
-  -webkit-text-stroke: 1.5px rgba(0, 0, 0, 0.15);
-  color: transparent;
-}
-
-.text-luxury-stroke-light {
-  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.3);
-  color: transparent;
-}
-
-.text-radiant-gold {
-  @apply text-brand-primary font-black;
-  background: none;
-  -webkit-background-clip: initial;
-  background-clip: initial;
-  -webkit-text-fill-color: initial;
-}
-
-.luxury-blur-reveal {
-  filter: blur(15px);
-  opacity: 0;
-  animation: luxuryReveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes luxuryReveal {
-  to {
-    filter: blur(0);
-    opacity: 1;
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-[-0.04em] font-black uppercase;
   }
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 5px;
+@layer components {
+  .section-padding {
+    @apply py-24 px-6 md:px-12 lg:px-24;
+  }
+
+  .premium-card {
+    @apply border border-black/5 bg-white p-8 transition-all duration-500 hover:border-black/20 hover:shadow-2xl hover:shadow-black/5;
+  }
+
+  .text-subtle {
+    @apply text-black/60 font-medium;
+  }
 }
 
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
+/* Custom animations if needed */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-::-webkit-scrollbar-thumb {
-  background: #000000;
-  border-radius: 0;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #333333;
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

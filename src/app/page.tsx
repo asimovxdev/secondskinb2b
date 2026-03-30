@@ -1,238 +1,443 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
-import { useRef } from "react";
-import Hero from "@/components/Hero";
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
+import { sportsData } from '@/lib/sportsData';
+import Link from 'next/link';
+import Image from 'next/image';
+import { ChevronRight, Shield, Zap, Target, Users, Paintbrush, Award, ArrowUpRight } from 'lucide-react';
 
-// Elite Performance Physic
-const transitionElite = {
-    duration: 1.2,
-    ease: [0.16, 1, 0.3, 1] as [number, number, number, number]
+const fadeIn = {
+  initial: { opacity: 0, y: 30 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-100px" },
+  transition: { duration: 0.8, ease: "easeOut" as any }
+};
+
+const staggerContainer = {
+  initial: {},
+  whileInView: { transition: { staggerChildren: 0.15 } }
 };
 
 export default function Home() {
-    const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-    return (
-        <main ref={containerRef} className="bg-white min-h-screen text-brand-primary relative selection:bg-brand-accent selection:text-white overflow-x-hidden">
-            <Hero />
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
 
-            <section id="about" className="py-40 md:py-60 px-6 lg:px-24 bg-black text-white relative overflow-hidden">
-                <div className="absolute inset-0 luxury-grid opacity-5 pointer-events-none" />
-                <div className="max-w-[1500px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-24 relative z-10 items-center">
-                    <div className="lg:col-span-8">
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            whileInView={{ opacity: 1 }}
-                            viewport={{ once: true }}
-                            transition={transitionElite}
-                        >
-                            <h2 className="text-6xl md:text-9xl font-black mb-16 leading-[0.85] uppercase tracking-tighter">
-                                About <br />
-                                <span className="text-white/20">Us.</span>
-                            </h2>
-                        </motion.div>
-                        <p className="text-2xl md:text-4xl font-black text-white/60 mb-20 leading-[1.1] tracking-tight">
-                            At Second Skin Style, we design premium custom sportswear engineered to move like your <span className="text-white">second skin</span>. Created for running clubs, sports teams, and performance-driven communities, our apparel combines technical fabric, precision printing, and bold identity.
-                        </p>
-                    </div>
+  const heroScale = useTransform(scrollYProgress, [0, 0.2], [1, 0.9]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+  const imageParallax = useTransform(scrollYProgress, [0, 1], [0, -200]);
 
-                    <div className="lg:col-span-4 flex flex-col justify-end">
-                        <div className="space-y-12 border-l border-white/5 pl-16">
-                            <SectorBlock label="Running Clubs" desc="Race tees, singlets, tank tops, and lightweight competition shorts." />
-                            <SectorBlock label="Multi-Sport Clubs" desc="Football, cricket, basketball, volleyball, and fitness team kits." />
-                            <SectorBlock label="Corporate & Event Teams" desc="Custom marathon and event apparel with strong brand identity." />
-                        </div>
-                    </div>
-                </div>
-            </section>
+  return (
+    <div ref={containerRef} className="relative">
+      {/* Premium Progress Bar */}
+      <motion.div 
+        className="fixed top-0 left-0 right-0 h-1 bg-black z-[110] origin-left"
+        style={{ scaleX: scrollYProgress }}
+      />
 
-            <section id="solutions" className="py-40 md:py-60 px-6 lg:px-24 bg-white">
-                <div className="max-w-[1500px] mx-auto">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-24 mb-32 border-b border-black/[0.05] pb-24 items-end">
-                        <div className="lg:col-span-12">
-                            <h2 className="text-5xl md:text-9xl font-black text-black mb-8 uppercase tracking-tighter leading-[0.85]">Precision <br />Customization.</h2>
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
-                        <SpecBlock
-                            title="Advanced Logo Printing"
-                            desc="Crisp, sharp detailing with long-lasting durability."
-                        />
-                        <SpecBlock
-                            title="Premium Sublimation"
-                            desc="Full-coverage, fade-resistant designs infused into the fabric."
-                        />
-                        <SpecBlock
-                            title="Complete Team Branding"
-                            desc="Custom colors, names, numbers, sponsor integration."
-                        />
-                    </div>
-                </div>
-            </section>
-
-            {/* SEC_3: PERFORMANCE RANGE (BENTO GRID) */}
-            <section id="range" className="py-40 md:py-60 bg-[#111111] text-white overflow-hidden relative border-t border-white/5">
-                <div className="px-6 lg:px-24 mb-32">
-                    <h2 className="text-6xl md:text-9xl font-black mb-16 uppercase tracking-tighter text-white leading-[0.85]">
-                        Performance <br /><span className="text-white/20">Range.</span>
-                    </h2>
-                </div>
-
-                <div className="relative px-6 lg:px-24">
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-8 auto-rows-[300px] md:auto-rows-[400px]">
-                        {[
-                            { name: "Elite Performance T-Shirts", img: "/images/elite_performance_tshirt_1772819066664.png", code: "EPS-01", span: "md:col-span-2 md:row-span-2" },
-                            { name: "Lightweight Tank Tops", img: "/images/lightweight_tank_top_1772819106853.png", code: "LWT-02", span: "md:col-span-1 md:row-span-1" },
-                            { name: "Competition Shorts", img: "/images/competition_shorts_1772819134578.png", code: "CMS-03", span: "md:col-span-1 md:row-span-2" },
-                            { name: "Full Sports Kits", img: "/images/hero-kit.png", code: "FSK-04", span: "md:col-span-1 md:row-span-1" },
-                            { name: "Training Wear", img: "/images/training_wear_set_athletic_1772819192134.png", code: "TRW-05", span: "md:col-span-2 md:row-span-1" },
-                            { name: "Event & Marathon", img: "/images/marathon_event_apparel_1772819224570.png", code: "EMA-06", span: "md:col-span-1 md:row-span-1" },
-                            { name: "Warm-Up Jackets", img: "/images/training_wear_set_athletic_1772819192134.png", code: "WUJ-07", span: "md:col-span-1 md:row-span-1" }
-                        ].map((item, i) => (
-                            <motion.div
-                                key={item.name}
-                                initial={{ opacity: 0, scale: 0.98 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: i * 0.1, duration: 0.8 }}
-                                className={`group relative bg-[#1A1A1A] overflow-hidden ${item.span}`}
-                            >
-                                <img
-                                    src={item.img}
-                                    alt={item.name}
-                                    className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-1000 filter grayscale"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
-                                <div className="absolute bottom-10 left-10 right-10 flex flex-col items-start gap-4">
-                                    <div className="flex flex-col">
-                                        <span className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] mb-2">{item.code}</span>
-                                        <h4 className="text-3xl font-black uppercase text-white leading-none tracking-tighter group-hover:text-[#F5F5F5] transition-colors">{item.name}</h4>
-                                    </div>
-                                    <div className="h-[1px] w-0 group-hover:w-full bg-white/20 transition-all duration-700" />
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* SEC_4: WHY US */}
-            <section id="approach" className="py-40 md:py-60 px-6 lg:px-24 bg-white relative overflow-hidden">
-                <div className="max-w-[1500px] mx-auto">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-24 items-end">
-                        <div className="lg:col-span-12">
-                            <h2 className="text-6xl md:text-9xl font-black text-black mb-10 uppercase tracking-tighter leading-[0.85]">
-                                Strategic <br />
-                                <span className="text-black/10">Advantage.</span>
-                            </h2>
-                        </div>
-                    </div>
-
-                    <div className="space-y-0 border-t border-black/5 mb-40">
-                        <WhyListRow text="Premium performance fabrics." />
-                        <WhyListRow text="High-definition sublimation technology." />
-                        <WhyListRow text="Tailored club identity solutions." />
-                        <WhyListRow text="Bulk production for teams & events." />
-                        <WhyListRow text="Professional design consultation." />
-                        <WhyListRow text="Fast and reliable turnaround." />
-                    </div>
-
-                    {/* Minimal Neumorphic Closing Section */}
-                    <div className="p-12 md:p-24 bg-[#F5F5F5] rounded-3xl shadow-[inset_10px_10px_20px_#e5e5e5,inset_-10px_-10px_20px_#ffffff] flex flex-col items-center text-center relative overflow-hidden max-w-4xl mx-auto">
-                        <div className="relative z-10">
-                            <h3 className="text-2xl md:text-3xl font-black mb-10 tracking-tight uppercase text-black/60 leading-tight">Elevate your club. Define your presence. <br /><span className="text-black">Perform without compromise.</span></h3>
-                            <button className="h-20 px-16 bg-black text-white hover:bg-zinc-800 transition-all duration-500 text-xl font-black uppercase tracking-widest shadow-lg">
-                                Begin Brief
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section >
-
-            {/* SEC_6: INQUIRY */}
-            <section id="contact" className="py-40 md:py-60 px-6 lg:px-24 bg-black relative overflow-hidden">
-                <div className="max-w-[1200px] mx-auto relative z-10">
-                    <div className="mb-32 text-center">
-                        <h2 className="text-6xl md:text-9xl font-black text-white mb-10 uppercase tracking-tighter leading-[0.85]">Inquire.</h2>
-                    </div>
-
-                    <form className="p-12 lg:p-24 bg-[#111111] border border-white/5">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                            <div className="space-y-4">
-                                <label className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20">Name</label>
-                                <input type="text" placeholder="Your Name" className="w-full bg-transparent border-b border-white/10 py-4 outline-none focus:border-white transition-colors font-black text-xl placeholder:text-white/5 text-white" />
-                            </div>
-                            <div className="space-y-4">
-                                <label className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20">Organization</label>
-                                <input type="text" placeholder="Club or Team Name" className="w-full bg-transparent border-b border-white/10 py-4 outline-none focus:border-white transition-colors font-black text-xl placeholder:text-white/5 text-white" />
-                            </div>
-                            <div className="space-y-4 md:col-span-2">
-                                <label className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20">Email</label>
-                                <input type="email" placeholder="Email Address" className="w-full bg-transparent border-b border-white/10 py-4 outline-none focus:border-white transition-colors font-black text-xl placeholder:text-white/5 text-white" />
-                            </div>
-                            <div className="space-y-4 md:col-span-2">
-                                <label className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20">Brief</label>
-                                <textarea rows={1} placeholder="Tell us about your project..." className="w-full bg-transparent border-b border-white/10 py-4 outline-none focus:border-white transition-colors font-black text-xl resize-none placeholder:text-white/5 text-white"></textarea>
-                            </div>
-                        </div>
-                        <div className="mt-20">
-                            <button className="h-20 w-full group !bg-white !text-black hover:!bg-zinc-200 transition-colors duration-500 font-black text-xl uppercase tracking-widest flex items-center justify-center gap-6">
-                                SUBMIT BRIEF
-                                <ArrowRight size={24} className="group-hover:translate-x-4 transition-transform duration-500" />
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </section>
-        </main>
-    );
-}
-
-/* INDUSTRIAL B&W SUB-COMPONENTS */
-
-function WhyListRow({ text }: { text: string }) {
-    return (
-        <div className="group border-b border-black/[0.05] py-14 flex flex-col lg:flex-row lg:items-center gap-10 transition-all duration-500 px-8 hover:bg-black hover:text-white">
-            <div className="flex-1">
-                <h3 className="text-3xl lg:text-5xl font-black transition-all duration-500 uppercase tracking-tighter group-hover:text-white">
-                    {text}
-                </h3>
-            </div>
-            <div className="lg:ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-4 transition-all duration-500">
-                <ArrowRight className="text-white" size={32} strokeWidth={1} />
-            </div>
+      {/* Hero Section - Elite Reveal */}
+      <motion.section 
+        style={{ scale: heroScale, opacity: heroOpacity }}
+        className="sticky top-0 h-screen flex items-center justify-center bg-white z-0 overflow-hidden"
+      >
+        <div className="absolute inset-0 z-0">
+          <Image 
+            src="/images/hero.png" 
+            alt="Elite Athlete" 
+            fill 
+            className="object-cover opacity-20 grayscale brightness-110"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-transparent to-white" />
         </div>
-    );
-}
 
-function SectorBlock({ label, desc }: { label: string; desc: string }) {
-    return (
-        <div className="flex gap-10 group cursor-default border-b border-white/5 pb-12 transition-all duration-500 hover:translate-x-2">
-            <div className="flex-1">
-                <h4 className="text-2xl font-black text-white mb-3 uppercase tracking-tighter transition-colors duration-500 group-hover:text-zinc-400">
-                    {label}
-                </h4>
-                <p className="text-white/40 text-lg leading-snug font-bold transition-colors duration-500 group-hover:text-white/80">
-                    {desc}
-                </p>
-            </div>
-        </div>
-    );
-}
-
-function SpecBlock({ title, desc }: { title: string; desc: string }) {
-    return (
-        <div className="p-12 border border-black/5 bg-white flex flex-col items-start gap-8 group transition-all duration-500 hover:bg-black hover:border-black">
-            <div className="flex justify-between w-full items-center">
-                <h4 className="text-2xl font-black uppercase tracking-tighter group-hover:text-white transition-colors duration-500">{title}</h4>
-            </div>
-            <p className="text-black/40 text-lg leading-snug font-bold group-hover:text-white/60 transition-colors duration-500">
-                {desc}
+        <div className="relative z-10 text-center space-y-8 px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: "circOut" }}
+          >
+            <h1 className="text-7xl md:text-[10rem] font-black tracking-[-0.06em] leading-[0.85] uppercase">
+              SECOND<br />SKIN<br />STYLE
+            </h1>
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 1 }}
+            className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-12"
+          >
+            <p className="text-xl md:text-2xl font-bold tracking-tight uppercase italic underline decoration-2 underline-offset-8">
+              Elite Custom Sportswear.
             </p>
+            <p className="text-xl md:text-2xl font-light tracking-widest uppercase opacity-40">
+              Built for Performance.
+            </p>
+          </motion.div>
         </div>
-    );
-}
 
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2 }}
+          className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4"
+        >
+          <span className="text-[10px] font-black tracking-[0.3em] uppercase opacity-40">Scroll to Explore</span>
+          <div className="w-[1px] h-16 bg-gradient-to-b from-black to-transparent" />
+        </motion.div>
+      </motion.section>
+
+      {/* Content Wrapper - Elevated Above Hero */}
+      <div className="relative z-10 bg-white shadow-[0_-50px_100px_-20px_rgba(0,0,0,0.1)]">
+        
+        {/* About Us - Cinematic Reveal */}
+        <section id="about" className="py-32 md:py-64 px-6 md:px-24 overflow-hidden relative">
+          <div className="absolute top-0 right-0 w-1/3 h-full opacity-[0.03] pointer-events-none">
+             <div className="w-full h-full border-l border-black rotate-12 translate-x-12" />
+          </div>
+
+          <div className="max-w-6xl mx-auto grid lg:grid-cols-12 gap-16 items-start relative z-10">
+            <motion.div {...fadeIn} className="lg:col-span-4 translate-y-4">
+              <span className="text-xs font-black tracking-[0.5em] uppercase text-black/30 border-l-2 border-black pl-4">Identification</span>
+              <h2 className="text-4xl font-black mt-4 uppercase">About Us</h2>
+            </motion.div>
+            
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              viewport={{ once: true }}
+              className="lg:col-span-8"
+            >
+        {/* Business Introduction */}
+        <section id="services" className="py-24 bg-brand-gray-light px-6 md:px-24">
+          <div className="max-w-7xl mx-auto">
+            <motion.div {...fadeIn} className="max-w-4xl">
+              <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-12">
+                Custom Sportswear for<br />Teams & Clubs
+              </h2>
+              <div className="grid md:grid-cols-2 gap-12">
+                <p className="text-xl md:text-2xl font-bold leading-tight tracking-tight">
+                  We manufacture custom sports uniforms for cricket, soccer, volleyball, running clubs and other
+                  sports. Add your team logo, player names, numbers and colors. 
+                </p>
+                <div className="space-y-6">
+                   <p className="text-lg text-black/60 font-medium leading-relaxed italic">
+                    Upload your design or request our design support. Samples available before bulk orders.
+                  </p>
+                  <div className="flex gap-4">
+                     <button className="bg-black text-white px-8 py-4 text-xs font-black uppercase tracking-[0.2em] hover:bg-black/80 transition-all">
+                       Explore Capabilities
+                     </button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Premium Sports Categories (Bento Grid) */}
+        <section id="categories" className="py-32 px-6 md:px-24 border-t border-black/5 bg-brand-gray-light">
+          <div className="max-w-7xl mx-auto">
+            <motion.div {...fadeIn} className="mb-16">
+               <span className="text-xs font-black tracking-[0.5em] uppercase text-black/30">Industry Verticals</span>
+               <h2 className="text-4xl md:text-6xl font-black mt-4 uppercase tracking-tighter">Sports Categories</h2>
+            </motion.div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-[auto] gap-4 auto-rows-[300px]">
+              {sportsData.map((cat, i) => {
+                const isSmall = i === 3 || i === 4;
+                const bentoClasses = [
+                  "md:col-span-2 md:row-span-2", // 1 (Cricket) - Large featured
+                  "md:col-span-2 md:row-span-1", // 2 (Soccer) - Wide
+                  "md:col-span-2 md:row-span-1", // 3 (Running) - Wide
+                  "md:col-span-1 md:row-span-1", // 4 (Custom) - Small square
+                  "md:col-span-1 md:row-span-1", // 5 (Volleyball) - Small square
+                  "md:col-span-2 md:row-span-1"  // 6 (More Sports) - Wide
+                ];
+                
+                return (
+                  <Link 
+                    key={cat.id} 
+                    href={`/sports/${cat.id}`}
+                    className={`relative overflow-hidden group flex flex-col justify-end cursor-pointer bg-black ${bentoClasses[i] || 'md:col-span-1 md:row-span-1'} p-8 md:p-12 hover:scale-[0.98] transition-transform duration-500`}
+                  >
+                    <Image 
+                      src={cat.img} 
+                      alt={cat.name} 
+                      fill 
+                      className="object-cover opacity-60 grayscale group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-[1s]"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent transition-opacity group-hover:from-black/70" />
+                    
+                    <div className="relative z-10 flex flex-col h-full justify-between">
+                      <div className="self-end opacity-0 group-hover:opacity-100 group-hover:-translate-y-2 group-hover:translate-x-2 transition-all absolute top-0 right-0 p-4">
+                        <ArrowUpRight className="w-8 h-8 text-white" />
+                      </div>
+                      <div className="mt-auto w-full">
+                         <span className="text-[10px] md:text-xs font-black text-white/50 tracking-[0.3em] uppercase block mb-1">0{i+1} // {cat.id}</span>
+                         <h3 className={`font-black text-white uppercase tracking-tighter mt-2 group-hover:-translate-y-2 transition-transform duration-500 ${isSmall ? 'text-2xl md:text-3xl leading-none' : 'text-3xl md:text-5xl leading-[0.9]'} break-words`}>{cat.name}</h3>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+
+        <section id="performance" className="py-32 md:py-48 px-6 md:px-12">
+          <div className="max-w-7xl mx-auto">
+            <motion.div {...fadeIn} className="mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8">
+              <div>
+                <span className="text-xs font-black tracking-[0.5em] uppercase text-black/30">Target Sectors</span>
+                <h2 className="text-5xl md:text-8xl font-black tracking-tighter uppercase mt-4">Designed for<br />Champions</h2>
+              </div>
+            </motion.div>
+            
+            <motion.div 
+              variants={staggerContainer}
+              initial="initial"
+              whileInView="whileInView"
+              viewport={{ once: true }}
+              className="grid lg:grid-cols-3 gap-6"
+            >
+              {[
+                { 
+                  title: "Running Clubs", 
+                  desc: "Race tees, singlets, tank tops, and lightweight competition shorts.",
+                  img: "/images/running.png",
+                  tag: "01"
+                },
+                { 
+                  title: "Multi-Sport Clubs", 
+                  desc: "Football, cricket, basketball, volleyball, and fitness team kits.",
+                  img: "/images/multi_sport.png",
+                  tag: "02"
+                },
+                { 
+                  title: "Corporate & Event Teams", 
+                  desc: "Custom marathon and event apparel with strong brand identity.",
+                  img: "/images/hero.png", // Reuse hero for corporate
+                  tag: "03"
+                }
+              ].map((item, i) => (
+                <motion.div 
+                  key={i}
+                  variants={fadeIn}
+                  className="group relative h-[600px] overflow-hidden bg-black flex items-end p-12"
+                >
+                  <Image 
+                    src={item.img} 
+                    alt={item.title} 
+                    fill 
+                    className="object-cover opacity-40 grayscale group-hover:scale-110 group-hover:opacity-60 transition-all duration-1000"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black to-transparent z-10" />
+                  
+                  <div className="relative z-20 space-y-6">
+                    <span className="text-4xl font-black text-white/20 group-hover:text-white transition-colors">{item.tag}</span>
+                    <h3 className="text-4xl font-black text-white uppercase tracking-tighter">{item.title}</h3>
+                    <p className="text-lg text-white/50 font-bold italic translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                      {item.desc}
+                    </p>
+                    <Link href="/contact">
+                       <button className="flex items-center gap-2 text-white font-black text-xs uppercase tracking-widest pt-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                         Get Project Quote <ArrowUpRight className="w-4 h-4" />
+                       </button>
+                    </Link>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Precision Customization - Structural Layout */}
+        <section className="py-32 md:py-48 px-6 md:px-24 bg-black text-white rounded-t-[5rem] overflow-hidden relative">
+           <div className="absolute top-0 right-0 p-24 opacity-[0.05] pointer-events-none">
+              <Shield className="w-[40rem] h-[40rem]" />
+           </div>
+
+          <div className="max-w-7xl mx-auto relative z-10">
+            <motion.div {...fadeIn} className="mb-24">
+              <span className="text-xs font-black tracking-[0.5em] uppercase text-white/30">Technology</span>
+              <h2 className="text-5xl md:text-7xl font-black tracking-tighter uppercase mt-4">Precision<br />Customization</h2>
+            </motion.div>
+
+            <div className="grid lg:grid-cols-3 gap-16">
+              {[
+                {
+                  title: "Advanced Logo Printing",
+                  desc: "Crisp, sharp detailing with long-lasting durability.",
+                  icon: Paintbrush
+                },
+                {
+                  title: "Premium Sublimation",
+                  desc: "Full-coverage, fade-resistant designs infused into the fabric.",
+                  icon: Award
+                },
+                {
+                  title: "Complete Team Branding",
+                  desc: "Custom colors, names, numbers, sponsor integration.",
+                  icon: Shield
+                }
+              ].map((item, i) => (
+                <motion.div 
+                  key={i}
+                  {...fadeIn}
+                  className="flex flex-col gap-8 group p-8 border border-white/5 hover:border-white/20 transition-colors bg-white/[0.02]"
+                >
+                  <div className="w-16 h-16 bg-white text-black flex items-center justify-center group-hover:bg-brand-gray-medium transition-colors">
+                    <item.icon className="w-8 h-8" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-black mb-4 uppercase tracking-tight">{item.title}</h3>
+                    <div className="w-12 h-1 bg-white mb-6 group-hover:w-full transition-all duration-700" />
+                    <p className="text-lg text-white/40 font-bold italic">{item.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Our Performance Range - High Density List (No Images as requested) */}
+        <section className="bg-white py-48 px-6 md:px-24">
+          <div className="max-w-7xl mx-auto">
+            <motion.div {...fadeIn} className="mb-24 text-center">
+              <span className="text-xs font-black tracking-[0.2em] uppercase text-black/30">The Collective</span>
+              <h2 className="text-4xl md:text-7xl font-black tracking-tighter uppercase mt-4">Our Performance Range</h2>
+            </motion.div>
+            
+            <motion.div 
+              variants={staggerContainer}
+              initial="initial"
+              whileInView="whileInView"
+              className="grid md:grid-cols-2 lg:grid-cols-4 gap-4"
+            >
+              {[
+                "Elite Performance T-Shirts",
+                "Lightweight Tank Tops / Singlets",
+                "Competition Shorts",
+                "Full Sports Kits",
+                "Training Wear",
+                "Event & Marathon Apparel",
+                "Warm-Up Jackets"
+              ].map((item, i) => (
+                <motion.div 
+                  key={i}
+                  variants={fadeIn}
+                  className="bg-brand-gray-light p-8 border border-black/5 flex flex-col justify-between group hover:bg-black hover:text-white transition-all duration-500 h-64"
+                >
+                  <span className="text-4xl font-black opacity-5 group-hover:opacity-20 mb-4">{i + 1}</span>
+                  <span className="font-black uppercase tracking-tighter text-2xl leading-none">{item}</span>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Why Second Skin Style - Visual Layout */}
+        <section id="why-us" className="py-32 md:py-48 px-6 md:px-24 overflow-hidden relative bg-brand-gray-light">
+          <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-32">
+            <motion.div {...fadeIn}>
+              <span className="text-xs font-black tracking-[0.5em] uppercase text-black/30">Competitive Advantage</span>
+              <h2 className="text-5xl md:text-8xl font-black tracking-tighter mt-4 uppercase italic">Why Second<br />Skin Style</h2>
+              <div className="mt-12 h-[400px] relative overflow-hidden group">
+                  <Image 
+                    src="/images/running.png" 
+                    alt="Technical Material" 
+                    fill 
+                    className="object-cover grayscale brightness-75 transition-transform duration-[2s] group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-black/20" />
+                  <p className="absolute bottom-12 left-12 right-12 text-2xl font-black text-white uppercase italic leading-none">
+                    Performance is not an option. It's our DNA.
+                  </p>
+              </div>
+            </motion.div>
+            
+            <motion.div 
+              variants={staggerContainer}
+              initial="initial"
+              whileInView="whileInView"
+              className="space-y-4"
+            >
+              {[
+                "Premium performance fabrics",
+                "High-definition sublimation technology",
+                "Tailored club identity solutions",
+                "Bulk production for teams & events",
+                "Professional design consultation",
+                "Fast and reliable turnaround"
+              ].map((benefit, i) => (
+                <motion.div 
+                  key={i}
+                  variants={fadeIn}
+                  className="group flex items-center justify-between py-10 border-b border-black/10 hover:border-black transition-colors"
+                >
+                  <span className="text-2xl md:text-3xl font-black uppercase italic tracking-tighter">{benefit}</span>
+                  <ChevronRight className="w-8 h-8 opacity-20 group-hover:opacity-100 group-hover:translate-x-2 transition-all" />
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Footer / Final CTA - High Impact */}
+        <section className="py-64 px-6 md:px-24 bg-black text-white text-center relative overflow-hidden">
+           <Image 
+              src="/images/multi_sport.png" 
+              alt="Final CTA" 
+              fill 
+              className="object-cover opacity-30 grayscale pointer-events-none"
+           />
+           <div className="absolute inset-0 bg-black/60" />
+
+          <motion.div 
+            {...fadeIn}
+            className="max-w-5xl mx-auto space-y-16 relative z-10"
+          >
+            <div className="space-y-6">
+              <h2 className="text-4xl md:text-7xl font-black tracking-tighter uppercase italic leading-none">
+                Elevate your club.<br />Define your presence.
+              </h2>
+              <p className="text-2xl md:text-4xl font-light tracking-widest uppercase opacity-40">
+                Perform without compromise.
+              </p>
+            </div>
+            
+            <Link href="/contact" className="inline-block">
+              <motion.button 
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative group bg-white text-black px-16 py-8 font-black uppercase tracking-[0.2em] overflow-hidden"
+              >
+                <span className="relative z-10 text-xl">Initialize Project</span>
+                <motion.div 
+                  className="absolute inset-0 bg-brand-gray-medium translate-y-full group-hover:translate-y-0 transition-transform duration-500"
+                />
+              </motion.button>
+            </Link>
+          </motion.div>
+        </section>
+
+        <footer className="py-12 border-t border-black/5 text-center bg-white px-6">
+          <p className="text-[10px] font-black tracking-[0.5em] text-black/20 uppercase">
+            SECONDSKINSTYLE &copy; {new Date().getFullYear()} // ELITE SPORTSWEAR SYSTEMS // ALL RIGHTS RESERVED
+          </p>
+        </footer>
+      </div>
+    </div>
+  );
+}

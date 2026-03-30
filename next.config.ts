@@ -4,6 +4,14 @@ const nextConfig: NextConfig = {
   /* config options here */
   // @ts-ignore - Flag requested by Vercel to fix workspace root inference
   outputFileTracingRoot: __dirname,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+    ],
+  },
 };
 
 export default nextConfig;
